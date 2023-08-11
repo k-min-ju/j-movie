@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {getSearchMovie} from "../movie/movieListFunc.js";
+import {getSearchMovie} from "./movieListFunc.jsx";
 import {addMovieSearchList} from "../reducer/movieSearchReducer.js";
 
 function MovieSearch(props) {

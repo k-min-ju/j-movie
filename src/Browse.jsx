@@ -2,33 +2,33 @@ import "./Browse.css";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import googleLogOut from "./login/GoogleLogOut.js";
-import SpecialMovie, {specialMoviePlay} from "./movie/specialMovie.js";
-import WatchingMovie from "./movie/watchingMovie.js";
-import LastYearMovie from "./movie/lastYearMovie.js";
-import RecentReleaseMovie from "./movie/recentReleaseMovie.js";
-import AnimationMovie from "./movie/animationMovie.js";
-import CrimeMovie from "./movie/crimeMovie.js"
-import ThrillerMovie from "./movie/thrillerMovie.js";
-import DramaMovie from "./movie/dramaMovie.js";
-import SFMovie from "./movie/sfMovie.js";
-import ActionMovie from "./movie/actionMovie.js";
-import AdventureMovie from "./movie/adventureMovie.js";
-import ComedyMovie from "./movie/comedyMovie.js";
-import FamilyMovie from "./movie/familyMovie.js";
-import HighteenMovie from "./movie/highteenMovie.js";
-import HorrorMovie from "./movie/horrorMovie.js";
-import MeloMovie from "./movie/meloMovie.js";
-import MysteryMovie from "./movie/mysteryMovie.js";
-import RomanceMovie from "./movie/romanceMovie.js";
-import YouthMovie from "./movie/youthMovie.js";
-import MovieSearch from "./movie/movieSearch.js";
+import SpecialMovie, {specialMoviePlay} from "./movie/specialMovie.jsx";
+import WatchingMovie from "./movie/watchingMovie.jsx";
+import LastYearMovie from "./movie/lastYearMovie.jsx";
+import RecentReleaseMovie from "./movie/recentReleaseMovie.jsx";
+import AnimationMovie from "./movie/animationMovie.jsx";
+import CrimeMovie from "./movie/crimeMovie.jsx"
+import ThrillerMovie from "./movie/thrillerMovie.jsx";
+import DramaMovie from "./movie/dramaMovie.jsx";
+import SFMovie from "./movie/sfMovie.jsx";
+import ActionMovie from "./movie/actionMovie.jsx";
+import AdventureMovie from "./movie/adventureMovie.jsx";
+import ComedyMovie from "./movie/comedyMovie.jsx";
+import FamilyMovie from "./movie/familyMovie.jsx";
+import HighteenMovie from "./movie/highteenMovie.jsx";
+import HorrorMovie from "./movie/horrorMovie.jsx";
+import MeloMovie from "./movie/meloMovie.jsx";
+import MysteryMovie from "./movie/mysteryMovie.jsx";
+import RomanceMovie from "./movie/romanceMovie.jsx";
+import YouthMovie from "./movie/youthMovie.jsx";
+import MovieSearch from "./movie/movieSearch.jsx";
 import {
     getLastYearMovie,
     getRecentReleaseMovie,
     getSpecialMovie,
     getGenreMovie,
     getSearchMovie
-} from "./movie/movieListFunc.js";
+} from "./movie/movieListFunc.jsx";
 
 import {setMovieSearchList} from "./reducer/movieSearchReducer.js";
 

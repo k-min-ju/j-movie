@@ -1,6 +1,6 @@
 import "./Browse.css";
 import {useNavigate, useParams} from "react-router-dom";
-import {getKMDBMovieOne} from "./movie/movieListFunc.js";
+import {getKMDBMovieOne} from "./movie/movieListFunc.jsx";
 import {useEffect, useRef, useState} from "react";
 import {ClipLoader} from "react-spinners";
 import {IdleTimerProvider} from 'react-idle-timer';
