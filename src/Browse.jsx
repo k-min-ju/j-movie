@@ -2,35 +2,19 @@ import './Browse.css';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import googleLogOut from './login/GoogleLogOut.js';
-import SpecialMovie, { specialMoviePlay } from './component/movie/specialMovie.jsx';
-import WatchingMovie from './component/movie/watchingMovie.jsx';
-import LastYearMovie from './component/movie/lastYearMovie.jsx';
-import RecentReleaseMovie from './component/movie/recentReleaseMovie.jsx';
-import AnimationMovie from './component/movie/animationMovie.jsx';
-import CrimeMovie from './component/movie/crimeMovie.jsx';
-import ThrillerMovie from './component/movie/thrillerMovie.jsx';
-import DramaMovie from './component/movie/dramaMovie.jsx';
-import SFMovie from './component/movie/sfMovie.jsx';
-import ActionMovie from './component/movie/actionMovie.jsx';
-import AdventureMovie from './component/movie/adventureMovie.jsx';
-import ComedyMovie from './component/movie/comedyMovie.jsx';
-import FamilyMovie from './component/movie/familyMovie.jsx';
-import HighteenMovie from './component/movie/highteenMovie.jsx';
-import HorrorMovie from './component/movie/horrorMovie.jsx';
-import MeloMovie from './component/movie/meloMovie.jsx';
-import MysteryMovie from './component/movie/mysteryMovie.jsx';
-import RomanceMovie from './component/movie/romanceMovie.jsx';
-import YouthMovie from './component/movie/youthMovie.jsx';
-import MovieSearch from './component/movie/movieSearch.jsx';
+import SpecialMovie, { specialMoviePlay } from './components/movie/specialMovie.jsx';
+import WatchingMovie from './components/movie/watchingMovie.jsx';
+import MovieSearch from './components/movie/movieSearch.jsx';
 import {
   getGenreMovie,
   getLastYearMovie,
   getRecentReleaseMovie,
   getSearchMovie,
   getSpecialMovie
-} from './component/movie/movieListFunc.jsx';
-
+} from './components/movie/movieListFunc.jsx';
 import { setMovieSearchList } from './reducer/movieSearchReducer.js';
+import { getGenreJsonData } from './components/common';
+import GenreMovieCarousel from './components/movie/GenreMovieCarousel';
 
 const maxCardListCnt = 5; // 지난 1년간 공개된 영화, 최근 개봉한 영화를 제외한 영화 카드 리스트 개수
 
@@ -106,17 +90,11 @@ function Browse() {
                         <img className="logo icon-logoUpdate active" src={process.env.PUBLIC_URL + '/mainLogo.png'} />
                       </a>
                       <ul className="tabbed-primary-navigation">
-                        {/*<li className="navigation-menu"><a className="menu-trigger" role="button" aria-haspopup="true" href="todo" tabIndex="0">메뉴</a></li>*/}
                         <li className="navigation-tab">
                           <a className="current active" href="/browse">
                             홈
                           </a>
                         </li>
-                        {/*<li className="navigation-tab"><a href="#" onClick={(e) => {e.preventDefault()}}>시리즈</a></li>*/}
-                        {/*<li className="navigation-tab"><a href="#" onClick={(e) => {e.preventDefault()}}>영화</a></li>*/}
-                        {/*<li className="navigation-tab"><a href="#" onClick={(e) => {e.preventDefault()}}>NEW! 요즘 대세 콘텐츠</a></li>*/}
-                        {/*<li className="navigation-tab"><a href="#" onClick={(e) => {e.preventDefault()}}>내가 찜한 콘텐츠</a></li>*/}
-                        {/*<li className="navigation-tab"><a href="#" onClick={(e) => {e.preventDefault()}}>언어별로 찾아보기</a></li>*/}
                       </ul>
                       <div className="secondary-navigation">
                         <div className="nav-element">
@@ -193,9 +171,6 @@ function Browse() {
                             </div>
                           </div>
                         </div>
-                        {/*<div className="nav-element show-kids">*/}
-                        {/*    <a href="#" onClick={(e) => {e.preventDefault()}}>키즈</a>*/}
-                        {/*</div>*/}
                         <div className="nav-element">
                           <span className="notifications">
                             <button
@@ -260,15 +235,10 @@ function Browse() {
                   ) : (
                     <MainView
                       dispatch={dispatch}
-                      isSearchStart={isSearchStart}
-                      setIsSearchStart={setIsSearchStart}
                       searchBoxRef={searchBoxRef}
                       searchInputRef={searchInputRef}
                       isLoading={isLoading}
                       setIsLoading={setIsLoading}
-                      startCount={startCount}
-                      setStartCount={setStartCount}
-                      inputValueRef={inputValueRef}
                     />
                   )}
                 </div>
@@ -282,45 +252,30 @@ function Browse() {
 }
 
 function MainView(props) {
-  let {
-    dispatch,
-    isSearchStart,
-    setIsSearchStart,
-    searchBoxRef,
-    searchInputRef,
-    isLoading,
-    setIsLoading,
-    startCount,
-    setStartCount,
-    inputValueRef
-  } = props;
+  const { dispatch, searchBoxRef, searchInputRef, isLoading, setIsLoading } = props;
 
   const specialReducer = useSelector(state => state.specialReducer);
-  const lastYearReducer = useSelector(state => state.lastYearReducer);
-  const recentReleaseReducer = useSelector(state => state.recentReleaseReducer);
-  const animationReducer = useSelector(state => state.animationReducer);
-  const crimeReducer = useSelector(state => state.crimeReducer);
-  const thrillerReducer = useSelector(state => state.thrillerReducer);
-  const dramaReducer = useSelector(state => state.dramaReducer);
-  const sfReducer = useSelector(state => state.sfReducer);
-  const actionReducer = useSelector(state => state.actionReducer);
-  const adventureReducer = useSelector(state => state.adventureReducer);
-  const comedyReducer = useSelector(state => state.comedyReducer);
-  const familyReducer = useSelector(state => state.familyReducer);
-  const highteenReducer = useSelector(state => state.highteenReducer);
-  const horrorReducer = useSelector(state => state.horrorReducer);
-  const meloReducer = useSelector(state => state.meloReducer);
-  const mysteryReducer = useSelector(state => state.mysteryReducer);
-  const romanceReducer = useSelector(state => state.romanceReducer);
-  const youthReducer = useSelector(state => state.youthReducer);
+  const reducersWithTitles = [
+    { reducer: useSelector(state => state.lastYearReducer), genreTitle: '지난 1년간 공개된 영화' },
+    { reducer: useSelector(state => state.recentReleaseReducer), genreTitle: '최근 개봉한 영화' }
+  ];
+  const allMovieData = getGenreJsonData();
+  allMovieData.forEach(movie => {
+    reducersWithTitles.push({
+      reducer: useSelector(state => state[movie.reducer]),
+      genreTitle: movie.genreTitle
+    });
+  });
 
-  const genreArray = window.common.getGenreJsonData(); // 장르별 영화 조회하기 위한 JsonData
+  // 장르별 영화 조회하기 위한 JsonData
+  const genreArray = window.common.getGenreJsonData();
 
-  let [currentCardListCnt, setCurrentCardListCnt] = useState(0); // 지난 1년간 공개된 영화, 최근 개봉한 영화를 제외한 현재까지 조회 완료된 cardList 수
-  let [specialMovieFunc, setSpecialMovieFunc] = useState();
-  let [isMovieStart, setIsMovieStart] = useState(false);
-  let [isReplay, setIsReplay] = useState(false);
-  let [muted, setMuted] = useState(true);
+  // 지난 1년간 공개된 영화, 최근 개봉한 영화를 제외한 현재까지 조회 완료된 cardList 수
+  const [currentCardListCnt, setCurrentCardListCnt] = useState(0);
+  const [specialMovieFunc, setSpecialMovieFunc] = useState();
+  const [isMovieStart, setIsMovieStart] = useState(false);
+  const [isReplay, setIsReplay] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   let specialMovieInit;
 
@@ -355,7 +310,6 @@ function MainView(props) {
   useEffect(() => {
     // 검색창 외 영역 클릭 감지
     function handleOutside(e) {
-      // current.contains(e.target) : 컴포넌트 특정 영역 외 클릭 감지를 위해 사용
       if (
         searchBoxRef.current &&
         !searchBoxRef.current.contains(e.target) &&
@@ -384,13 +338,11 @@ function MainView(props) {
     }
 
     // 인피니티 스크롤
-    // window.innerHeight : 현재 브라우저의 창 높이
-    // document.documentElement.scrollTop : 현재 페이지 스크롤 위치
-    // document.documentElement.scrollHeight : 전체 높이
-    if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.scrollHeight - 1000) {
-      if (!isLoading) {
-        getMovieCardList(dispatch, genreArray, currentCardListCnt, setCurrentCardListCnt, setIsLoading);
-      }
+    if (
+      window.innerHeight + document.documentElement.scrollTop > document.documentElement.scrollHeight - 1000 &&
+      !isLoading
+    ) {
+      getMovieCardList(dispatch, genreArray, currentCardListCnt, setCurrentCardListCnt, setIsLoading);
     }
   }, [currentCardListCnt, isLoading]);
 
@@ -421,42 +373,13 @@ function MainView(props) {
       {/*시청중인 영화*/}
       <WatchingMovie movieList={watchingMovieList} />
 
-      {/*지난 1년간 공개된 영화*/}
-      <LastYearMovie movieList={lastYearReducer} />
-      {/*최근 개봉한 영화*/}
-      <RecentReleaseMovie movieList={recentReleaseReducer} />
-      {/*애니메이션 영화*/}
-      <AnimationMovie movieList={animationReducer} />
-      {/*범죄 영화*/}
-      <CrimeMovie movieList={crimeReducer} />
-      {/*스릴러 영화*/}
-      <ThrillerMovie movieList={thrillerReducer} />
-      {/*드라마 영화*/}
-      <DramaMovie movieList={dramaReducer} />
-      {/*SF 영화*/}
-      <SFMovie movieList={sfReducer} />
-
-      {/*액션 영화*/}
-      <ActionMovie movieList={actionReducer} />
-      {/*모험 영화*/}
-      <AdventureMovie movieList={adventureReducer} />
-      {/*코미디 영화*/}
-      <ComedyMovie movieList={comedyReducer} />
-      {/*가족 영화*/}
-      <FamilyMovie movieList={familyReducer} />
-      {/*하이틴 영화*/}
-      <HighteenMovie movieList={highteenReducer} />
-
-      {/*공포 영화*/}
-      <HorrorMovie movieList={horrorReducer} />
-      {/*멜로 영화*/}
-      <MeloMovie movieList={meloReducer} />
-      {/*미스터리 영화*/}
-      <MysteryMovie movieList={mysteryReducer} />
-      {/*로맨스 영화*/}
-      <RomanceMovie movieList={romanceReducer} />
-      {/*청춘 영화*/}
-      <YouthMovie movieList={youthReducer} />
+      {reducersWithTitles.map(movieInfo => (
+        <GenreMovieCarousel
+          key={movieInfo.genreTitle}
+          movieList={movieInfo.reducer}
+          genreTitle={movieInfo.genreTitle}
+        />
+      ))}
     </div>
   );
 }

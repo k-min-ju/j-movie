@@ -8,9 +8,10 @@ import { setAdventureList } from '../reducer/adventureReducer.js';
 import { setHighteenList } from '../reducer/highteenReducer.js';
 import { setHorrorList } from '../reducer/horrorReducer.js';
 import { setMeloList } from '../reducer/meloReducer.js';
-import { setMysteryList } from '../reducer/mysteryReducer.js';
-import { setRomanceList } from '../reducer/romanceReducer.js';
-import { setYouthList } from '../reducer/youthReducer.js';
+import { setMysteryList } from '../reducer/mysteryReducer';
+import { setRomanceList } from '../reducer/romanceReducer';
+import { setYouthList } from '../reducer/youthReducer';
+import { setComedyList } from '../reducer/comedyReducer';
 
 export function isEmpty(value) {
   return value === null || value === undefined || value === '';
@@ -38,63 +39,93 @@ export function getGenreJsonData() {
   return [
     {
       genre: '애니메이션',
-      setReducerFunc: setAnimationList
+      setReducerFunc: setAnimationList,
+      reducer: 'animationReducer',
+      genreTitle: '애니메이션'
     },
     {
       genre: '범죄',
-      setReducerFunc: setCrimeList
+      setReducerFunc: setCrimeList,
+      reducer: 'crimeReducer',
+      genreTitle: '범죄'
     },
     {
       genre: '스릴러',
-      setReducerFunc: setThrillerList
+      setReducerFunc: setThrillerList,
+      reducer: 'thrillerReducer',
+      genreTitle: '스릴러'
     },
     {
       genre: '드라마',
-      setReducerFunc: setDramaList
+      setReducerFunc: setDramaList,
+      reducer: 'dramaReducer',
+      genreTitle: '드라마'
     },
     {
       genre: 'SF',
-      setReducerFunc: setSfList
+      setReducerFunc: setSfList,
+      reducer: 'sfReducer',
+      genreTitle: 'SF'
     },
     {
       genre: '액션',
-      setReducerFunc: setActionList
+      setReducerFunc: setActionList,
+      reducer: 'actionReducer',
+      genreTitle: '액션'
     },
     {
       genre: '모험',
-      setReducerFunc: setSfList
+      setReducerFunc: setSfList,
+      reducer: 'adventureReducer',
+      genreTitle: '모험'
     },
     {
       genre: '코메디',
-      setReducerFunc: setSfList
+      setReducerFunc: setComedyList,
+      reducer: 'comedyReducer',
+      genreTitle: '코미디'
     },
     {
       genre: '가족',
-      setReducerFunc: setAdventureList
+      setReducerFunc: setAdventureList,
+      reducer: 'familyReducer',
+      genreTitle: '가족'
     },
     {
       genre: '하이틴',
-      setReducerFunc: setHighteenList
+      setReducerFunc: setHighteenList,
+      reducer: 'highteenReducer',
+      genreTitle: '하이틴'
     },
     {
       genre: '공포',
-      setReducerFunc: setHorrorList
+      setReducerFunc: setHorrorList,
+      reducer: 'horrorReducer',
+      genreTitle: '공포'
     },
     {
       genre: '멜로',
-      setReducerFunc: setMeloList
+      setReducerFunc: setMeloList,
+      reducer: 'meloReducer',
+      genreTitle: '멜로'
     },
     {
       genre: '미스터리',
-      setReducerFunc: setMysteryList
+      setReducerFunc: setMysteryList,
+      reducer: 'mysteryReducer',
+      genreTitle: '미스터리'
     },
     {
       genre: '로맨스',
-      setReducerFunc: setRomanceList
+      setReducerFunc: setRomanceList,
+      reducer: 'romanceReducer',
+      genreTitle: '로맨스'
     },
     {
       genre: '청춘영화',
-      setReducerFunc: setYouthList
+      setReducerFunc: setYouthList,
+      reducer: 'youthReducer',
+      genreTitle: '청춘'
     }
   ];
 }
@@ -218,7 +249,7 @@ export function getMovieVal(movieVal, docId) {
   if (isNotEmpty(localStorage.getItem('watchingMovieData'))) {
     existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
     existingData = existingData.find(movie => {
-      if (movie.DOCID == docId) {
+      if (movie.DOCID === docId) {
         isDuplicate = true;
         return movie;
       }
@@ -241,7 +272,7 @@ export function removeWatchingData(docId) {
   localStorage.removeItem(docId);
   if (window.common.isNotEmpty(localStorage.getItem('watchingMovieData'))) {
     existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
-    existingData = existingData.filter((item, index) => item.DOCID !== docId);
+    existingData = existingData.filter(item => item.DOCID !== docId);
     localStorage.setItem('watchingMovieData', JSON.stringify(existingData));
   }
 }
