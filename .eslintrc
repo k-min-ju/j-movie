@@ -21,9 +21,10 @@
     }
   },
   "rules": {
-    "no-unused-vars": "off",
+    "no-unused-vars": "error",
     "react/react-in-jsx-scope": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "react/prop-types": "off"
   },
   "settings": {
     "react": {
