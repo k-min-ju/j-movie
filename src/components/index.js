@@ -5,6 +5,10 @@ import WatchingMovie from '@/components/movie/WatchingMovie';
 import MovieSearch from '@/components/movie/MovieSearch';
 import RecentReleaseMovie from '@/components/movie/RecentReleaseMovie';
 import GoogleLoginButton from '@/components/google/LoginButton';
+import Rating18Icon from '@/components/icon/Rating18Icon';
+import Rating15Icon from '@/components/icon/Rating15Icon';
+import Rating12Icon from '@/components/icon/Rating12Icon';
+import RatingAllIcon from '@/components/icon/RatingAllIcon';
 
 export {
   MovieSearch,
@@ -13,5 +17,9 @@ export {
   SpecialMovie,
   LastYearMovie,
   RecentReleaseMovie,
-  GoogleLoginButton
+  GoogleLoginButton,
+  Rating18Icon,
+  Rating15Icon,
+  Rating12Icon,
+  RatingAllIcon
 };
