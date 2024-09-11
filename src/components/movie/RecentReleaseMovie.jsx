@@ -5,15 +5,16 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { getMovieJsonData, getMovieVal, setWatchingMovieData } from '@/common';
+import { getMovieVal, setWatchingMovieData } from '@/common';
 
 let slidesPer1 = 7;
 let slidesPer2 = 5;
 let slidesPer3 = 4;
 let slidesPer4 = 3;
 
-function ActionMovie({ genreTitle, movieList }) {
-  if (movieList.length === 0) return;
+function RecentReleaseMovie(props) {
+  if (props.movieList.length == 0) return;
+  let movieList = [...props.movieList];
 
   const pagination = {
     clickable: true,
@@ -27,7 +28,7 @@ function ActionMovie({ genreTitle, movieList }) {
   return (
     <div>
       <div className="lolomoRow lolomoRow_title_card ltr-0" data-list-context="newRelease">
-        <h2 className="rowTitle ltr-0">{genreTitle}</h2>
+        <h2 className="rowTitle ltr-0">최근 개봉한 영화</h2>
         <div className="rowContainer rowContainer_title_card" id="row-1">
           <div className="ptrack-container">
             <div className="rowContent slider-hover-trigger-layer">
@@ -125,4 +126,4 @@ function ActionMovie({ genreTitle, movieList }) {
   );
 }
 
-export default React.memo(ActionMovie);
+export default React.memo(RecentReleaseMovie);

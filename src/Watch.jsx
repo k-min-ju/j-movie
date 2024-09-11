@@ -1,38 +1,43 @@
-import './Browse.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getKMDBMovieOne } from './component/movie/movieListFunc.jsx';
 import { useEffect, useRef, useState } from 'react';
-import { ClipLoader } from 'react-spinners';
 import { IdleTimerProvider } from 'react-idle-timer';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeDownIcon from '@mui/icons-material/VolumeDown';
+import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import { getKMDBMovieOne } from '@/components/movie/common';
+import '@/Browse.css';
+import { isEmpty, isNotEmpty, removeWatchingData } from '@/common';
 
 function Watch() {
-  const { movieId, movieSeq, movieVal } = useParams(); // 영화 parameter
-  let [status, setStatus] = useState('loading'); // loading : 로딩바 표시, active : 영화 상단, 하단 UI표시, passive : 영화 중지 상태일 때 영화에 대한 설명 표시
-  let [isPlayMovie, setIsPlayMovie] = useState(false); // true : 영화 상영중, false : 영화 중지
-  let [movieData, setMovieData] = useState(); // KMDb에 요청한 영화 DATA
-  let [volumeStatus, setVolumeStatus] = useState(); // high, medium, low, off값으로 mute버튼 toggle
-  let [playBackForward, setPlayBackForward] = useState(); // back : 뒤로 10초, forward : 앞으로 10초 이동하는 애니메이션 표시
-  let [showTimeout, setShowTimeout] = useState(); // mouse오버 시 SoundBar컴포넌트 유지시키는 용도
-  let [disableClickBack, setDisableClickBack] = useState(false); // 뒤로 10초 이동 시 0.5초 disabled
-  let [disableClickForward, setDisableClickForward] = useState(false); // 앞으로 10초 이동 시 0.5초 disabled
-  let [movieDuration, setMovieDuration] = useState(); // 영화 상영 남은 시간
-  let [currentPlayTime, setCurrentPlayTime] = useState(0); // 영화 현재 상영 시간
-  let [isUpdateNeed, setIsUpdateNeed] = useState(false); // Active컴포넌트에서 타임라인 바 상태를 update하기 위해 사용
-  let [isFullScreen, setIsFullScreen] = useState(false); // 영화 fullScreen 여부
-  let [isInit, setIsInit] = useState(true); // 시청중인 영화 타임라인 바 setting하기 위해 사용
+  const { movieId, movieSeq, movieVal } = useParams();
+  const [status, setStatus] = useState('loading'); // loading : 로딩바 표시, active : 영화 상단, 하단 UI표시, passive : 영화 중지 상태일 때 영화에 대한 설명 표시
+  const [isPlayMovie, setIsPlayMovie] = useState(false);
+  const [movieData, setMovieData] = useState();
+  const [volumeStatus, setVolumeStatus] = useState();
+  const [playBackForward, setPlayBackForward] = useState();
+  const [showTimeout, setShowTimeout] = useState();
+  const [disableClickBack, setDisableClickBack] = useState(false);
+  const [disableClickForward, setDisableClickForward] = useState(false);
+  const [movieDuration, setMovieDuration] = useState();
+  const [currentPlayTime, setCurrentPlayTime] = useState(0);
+  const [isUpdateNeed, setIsUpdateNeed] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isInit, setIsInit] = useState(true);
   const navigate = useNavigate();
   const videoRef = useRef(null);
-  const ariaValueRef = useRef(null); // 사운드 바에서 사용
-  const railRef = useRef(null); // 사운드 바에서 사용
-  const knobRef = useRef(null); // 사운드 바에서 사용
-  const prevRailHeight = useRef(null); // 사운드 바에서 사용
-  const timeLineBarRef = useRef(null); // 타임라인 바에서 사용
-  const tickRef = useRef(null); // 타임라인 바에서 사용
-  const tickLeftRef = useRef(null); // 타임라인 바에서 사용
-  const tickRightRef = useRef(null); // 타임라인 바에서 사용
-  const redBtnRef = useRef(null); // 타임라인 바에서 사용
-  const redLineRef = useRef(null); // 타임라인 바에서 사용
-  const prevTimeLineWidth = useRef(null); // 타임라인 바에서 사용
+  const ariaValueRef = useRef(null);
+  const railRef = useRef(null);
+  const knobRef = useRef(null);
+  const prevRailHeight = useRef(null);
+  const timeLineBarRef = useRef(null);
+  const tickRef = useRef(null);
+  const tickLeftRef = useRef(null);
+  const tickRightRef = useRef(null);
+  const redBtnRef = useRef(null);
+  const redLineRef = useRef(null);
+  const prevTimeLineWidth = useRef(null);
 
   useEffect(() => {
     document.getElementsByTagName('html')[0].className =
@@ -41,11 +46,11 @@ function Watch() {
     // localStorage.getItem('movieMuted') : 최초 영화 시작 시 설정에 필요한 음소거 값
     // localStorage.getItem('movieVolume') : 최초 영화 시작 시 설정에 필요한 음량 값
     // 음소거 기본값 설정
-    if (window.common.isEmpty(localStorage.getItem('movieMuted'))) {
+    if (localStorage.getItem('movieMuted')) {
       localStorage.setItem('movieMuted', 'OFF');
     }
     // 음량 기본값 설정
-    if (window.common.isEmpty(localStorage.getItem('movieVolume'))) {
+    if (isEmpty(localStorage.getItem('movieVolume'))) {
       localStorage.setItem('movieVolume', '0.5');
     }
 
@@ -54,7 +59,7 @@ function Watch() {
         console.log(err.code);
       })
       .then(data => {
-        if (window.common.isEmpty(data)) return;
+        if (isEmpty(data)) return;
 
         setMovieData(data);
         document.querySelector('.ltr-omkt8s').classList.replace('inactive', 'active');
@@ -81,7 +86,7 @@ function Watch() {
             document.getElementById('movie').volume = localStorage.getItem('movieVolume');
             volumeSvg(videoRef, setVolumeStatus);
             ariaValueRef.current.setAttribute('aria-valuenow', localStorage.getItem('movieVolume'));
-            if (window.common.isNotEmpty(localStorage.getItem('knobTop'))) {
+            if (isNotEmpty(localStorage.getItem('knobTop'))) {
               knobRef.current.style.top = localStorage.getItem('knobTop');
               railRef.current.children[0].style.top = localStorage.getItem('railTop');
               railRef.current.children[0].style.height = localStorage.getItem('railHeight');
@@ -139,11 +144,10 @@ function Watch() {
           <div className="watch-video--player-view">
             {
               // 로딩
-              status == 'loading' ? (
+              status === 'loading' ? (
                 <Loading />
               ) : (
                 <TimerComponent
-                  status={status}
                   setStatus={setStatus}
                   isPlayMovie={isPlayMovie}
                   setIsPlayMovie={setIsPlayMovie}
@@ -532,7 +536,7 @@ function Video(props) {
     if (isPlayMovie) {
       const interval = setInterval(() => {
         setCurrentPlayTime(prevTime => prevTime + 1);
-        if (window.common.isEmpty(timeLineBarRef.current) && isUpdateNeed == false) {
+        if (isEmpty(timeLineBarRef.current) && isUpdateNeed === false) {
           setIsUpdateNeed(true);
         }
       }, 1000);
@@ -542,7 +546,7 @@ function Video(props) {
   }, [isPlayMovie]);
 
   useEffect(() => {
-    if (window.common.isEmpty(timeLineBarRef.current)) return;
+    if (isEmpty(timeLineBarRef.current)) return;
     timelineBarUpdate(timeLineBarRef, videoRef, currentPlayTime, redLineRef, redBtnRef, setMovieDuration, movieData);
   }, [currentPlayTime]);
 
@@ -558,7 +562,7 @@ function Video(props) {
               setCurrentPlayTime(0);
               setStatus('ended');
               setMovieDuration(convertToHHMM(videoRef.current.duration));
-              if (window.common.isNotEmpty(redBtnRef.current) && window.common.isNotEmpty(redLineRef.current)) {
+              if (isNotEmpty(redBtnRef.current) && isNotEmpty(redLineRef.current)) {
                 redBtnRef.current.style.left = 'calc(0px - 0.75rem)';
                 redLineRef.current.style.width = '0px';
               }
@@ -567,7 +571,7 @@ function Video(props) {
 
               const docId = movieData[0].DOCID;
               // 시청중인 영화 삭제
-              window.common.removeWatchingData(docId);
+              removeWatchingData(docId);
               document.getElementById('backBtn').click();
             }}
             src={`https://www.kmdb.or.kr/trailer/play/${movieVal}.mp4`}
@@ -591,127 +595,18 @@ function moviePlayBtn(isPlayMovie, setIsPlayMovie, videoRef) {
 }
 
 // 음소거 버튼 컴포넌트
-function MovieMutedBtn(props) {
-  switch (props.volumeStatus) {
+function MovieMutedBtn({ volumeStatus }) {
+  switch (volumeStatus) {
     case 'high':
-      return (
-        <>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="ltr-0 e1mhci4z1"
-            data-name="VolumeHigh"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M24 12C24 8.28693 22.525 4.72597 19.8995 2.10046L18.4853 3.51468C20.7357 5.76511 22 8.81736 22 12C22 15.1826 20.7357 18.2348 18.4853 20.4852L19.8995 21.8995C22.525 19.2739 24 15.713 24 12ZM11 3.99995C11 3.59549 10.7564 3.23085 10.3827 3.07607C10.009 2.92129 9.57889 3.00685 9.29289 3.29285L4.58579 7.99995H1C0.447715 7.99995 0 8.44767 0 8.99995V15C0 15.5522 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0786 10.3827 20.9238C10.7564 20.7691 11 20.4044 11 20V3.99995ZM5.70711 9.70706L9 6.41417V17.5857L5.70711 14.2928L5.41421 14H5H2V9.99995H5H5.41421L5.70711 9.70706ZM16.0001 12C16.0001 10.4087 15.368 8.88254 14.2428 7.75732L12.8285 9.17154C13.5787 9.92168 14.0001 10.9391 14.0001 12C14.0001 13.0608 13.5787 14.0782 12.8285 14.8284L14.2428 16.2426C15.368 15.1174 16.0001 13.5913 16.0001 12ZM17.0709 4.92889C18.9462 6.80426 19.9998 9.3478 19.9998 12C19.9998 14.6521 18.9462 17.1957 17.0709 19.071L15.6567 17.6568C17.157 16.1565 17.9998 14.1217 17.9998 12C17.9998 9.87823 17.157 7.8434 15.6567 6.34311L17.0709 4.92889Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </>
-      );
-      break;
-
+      return <VolumeUpIcon />;
     case 'medium':
-      return (
-        <>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="ltr-0 e1mhci4z1"
-            data-name="VolumeMedium"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M11 4.00003C11 3.59557 10.7564 3.23093 10.3827 3.07615C10.009 2.92137 9.57889 3.00692 9.29289 3.29292L4.58579 8.00003H1C0.447715 8.00003 0 8.44774 0 9.00003V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4.00003ZM5.70711 9.70714L9 6.41424V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70714ZM17.0709 4.92897C18.9462 6.80433 19.9998 9.34787 19.9998 12C19.9998 14.6522 18.9462 17.1957 17.0709 19.0711L15.6567 17.6569C17.157 16.1566 17.9998 14.1218 17.9998 12C17.9998 9.87831 17.157 7.84347 15.6567 6.34318L17.0709 4.92897ZM14.2428 7.7574C15.368 8.88262 16.0001 10.4087 16.0001 12C16.0001 13.5913 15.368 15.1175 14.2428 16.2427L12.8285 14.8285C13.5787 14.0783 14.0001 13.0609 14.0001 12C14.0001 10.9392 13.5787 9.92176 12.8285 9.17161L14.2428 7.7574Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </>
-      );
-      break;
-
+      return <VolumeDownIcon />;
     case 'low':
-      return (
-        <>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="ltr-0 e1mhci4z1"
-            data-name="VolumeLow"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M11 4C11 3.59554 10.7564 3.2309 10.3827 3.07612C10.009 2.92134 9.57889 3.00689 9.29289 3.29289L4.58579 8H1C0.447715 8 0 8.44771 0 9V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4ZM5.70711 9.70711L9 6.41421V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70711ZM16.0001 12C16.0001 10.4087 15.368 8.88259 14.2428 7.75737L12.8285 9.17158C13.5787 9.92173 14.0001 10.9391 14.0001 12C14.0001 13.0609 13.5787 14.0783 12.8285 14.8284L14.2428 16.2427C15.368 15.1174 16.0001 13.5913 16.0001 12Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </>
-      );
-      break;
-
+      return <VolumeMuteIcon />;
     case 'off':
-      return (
-        <>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="ltr-0 e1mhci4z1"
-            data-name="VolumeOff"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M11 4.00003C11 3.59557 10.7564 3.23093 10.3827 3.07615C10.009 2.92137 9.57889 3.00692 9.29289 3.29292L4.58579 8.00003H1C0.447715 8.00003 0 8.44774 0 9.00003V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4.00003ZM5.70711 9.70714L9 6.41424V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70714ZM15.2929 9.70714L17.5858 12L15.2929 14.2929L16.7071 15.7071L19 13.4142L21.2929 15.7071L22.7071 14.2929L20.4142 12L22.7071 9.70714L21.2929 8.29292L19 10.5858L16.7071 8.29292L15.2929 9.70714Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </>
-      );
-      break;
-
+      return <VolumeOffIcon />;
     default:
-      return (
-        <>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="ltr-0 e1mhci4z1"
-            data-name="VolumeOff"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M11 4.00003C11 3.59557 10.7564 3.23093 10.3827 3.07615C10.009 2.92137 9.57889 3.00692 9.29289 3.29292L4.58579 8.00003H1C0.447715 8.00003 0 8.44774 0 9.00003V15C0 15.5523 0.447715 16 1 16H4.58579L9.29289 20.7071C9.57889 20.9931 10.009 21.0787 10.3827 20.9239C10.7564 20.7691 11 20.4045 11 20V4.00003ZM5.70711 9.70714L9 6.41424V17.5858L5.70711 14.2929L5.41421 14H5H2V10H5H5.41421L5.70711 9.70714ZM15.2929 9.70714L17.5858 12L15.2929 14.2929L16.7071 15.7071L19 13.4142L21.2929 15.7071L22.7071 14.2929L20.4142 12L22.7071 9.70714L21.2929 8.29292L19 10.5858L16.7071 8.29292L15.2929 9.70714Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </>
-      );
-      break;
+      return <VolumeOffIcon />;
   }
 }
 
@@ -763,7 +658,7 @@ function Active(props) {
 
     // 최초 로드 시 1번만 실행. 시청중인 영화 타임 라인 바 setting
     if (isInit) {
-      if (window.common.isNotEmpty(localStorage.getItem(movieData[0].DOCID))) {
+      if (isNotEmpty(localStorage.getItem(movieData[0].DOCID))) {
         const watchingData = JSON.parse(localStorage.getItem(movieData[0].DOCID));
         redLineRef.current.style.width = watchingData.redLineWidth;
         redBtnRef.current.style.left = watchingData.redBtnLeft;
@@ -1314,7 +1209,7 @@ function volumeSvg(videoRef, setVolumeStatus) {
     setVolumeStatus('medium');
   } else if (videoRef.current.volume > 0) {
     setVolumeStatus('low');
-  } else if (videoRef.current.volume == 0) {
+  } else if (videoRef.current.volume === 0) {
     setVolumeStatus('off');
   }
 }
@@ -1331,8 +1226,9 @@ function Passive() {
           <span>1시간 40분</span>
         </h3>
         <p className="ltr-l09063" data-uia="evidence-overlay-synopsis">
-          경찰 정보 요원이 범죄 조직에 의해 사살되면서, 관리하던 위장 요원 '블랙잭'의 모든 정보를 삭제한다. 어느 날
-          갑자기 '블랙 잭'을 자처하는 인물의 연락을 받은 홍콩 경찰은 블랙잭과의 접선을 위해 파티에 요원을 보낸다.
+          경찰 정보 요원이 범죄 조직에 의해 사살되면서, 관리하던 위장 요원 &apos;블랙잭&apos;의 모든 정보를 삭제한다.
+          어느 날 갑자기 &apos;블랙 잭&apos;을 자처하는 인물의 연락을 받은 홍콩 경찰은 블랙잭과의 접선을 위해 파티에
+          요원을 보낸다.
         </p>
         <span className="ltr-hpadbw">일시정지됨</span>
       </div>
@@ -1341,7 +1237,7 @@ function Passive() {
 }
 
 function TimerComponent(props) {
-  const { status, setStatus, isPlayMovie, setIsPlayMovie, videoRef, isFullScreen, setIsFullScreen } = props;
+  const { setStatus, isPlayMovie, setIsPlayMovie, videoRef, isFullScreen, setIsFullScreen } = props;
   let [changeTimeout, setChangeTimeout] = useState();
   let timeout;
 
@@ -1355,7 +1251,7 @@ function TimerComponent(props) {
     document.querySelector('.ltr-omkt8s').style.cursor = 'none';
     changeUI('inactive');
 
-    if (isPlayMovie == false && document.querySelector('.ltr-omkt8s').classList[0] == 'inactive') {
+    if (isPlayMovie === false && document.querySelector('.ltr-omkt8s').classList[0] === 'inactive') {
       timeout = 8000;
     } else {
       timeout = 3000;
@@ -1374,11 +1270,11 @@ function TimerComponent(props) {
     changeUI('active');
 
     // 스페이스바 입력
-    if (event.code == 'Space' || event.code == 'Enter') {
+    if (event.code === 'Space' || event.code === 'Enter') {
       moviePlayBtn(isPlayMovie, setIsPlayMovie, videoRef);
     }
 
-    if (event.code == 'F11') {
+    if (event.code === 'F11') {
       fullScreen(isFullScreen, setIsFullScreen);
     }
 
@@ -1493,7 +1389,7 @@ function timelineBarUpdate(
   const movieDuration = videoRef.current.duration;
   const timelineRatio = (currentPlayTime / movieDuration) * timelineBarWidth;
 
-  if (window.common.isNotEmpty(timeLineBarRef.current) && window.common.isNotEmpty(timeLineBarRef.current)) {
+  if (isNotEmpty(timeLineBarRef.current) && isNotEmpty(timeLineBarRef.current)) {
     redLineRef.current.style.width = `${timelineRatio}px`;
     redBtnRef.current.style.left = `calc(${timelineRatio}px - 0.75rem)`;
   }

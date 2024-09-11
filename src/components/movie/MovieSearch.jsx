@@ -1,19 +1,17 @@
 import React, { useCallback, useEffect } from 'react';
-import { getSearchMovie } from './movieListFunc.jsx';
-import { addMovieSearchList } from '../../reducer/movieSearchReducer.js';
+import { addMovieSearchList } from '@/reducer/movieSearchReducer.js';
+import { getSearchMovie } from '@/components/movie/common';
+import { getMovieJsonData, getMovieVal, setWatchingMovieData } from '@/common';
 
 function MovieSearch(props) {
-  if (props.movieList.length == 0) return;
+  if (props.movieList.length === 0) return;
   let { dispatch, startCount, setStartCount, inputValueRef, isLoading, setIsLoading } = props;
   let movieList = [...props.movieList];
 
-  const movieJsonData = window.common.getMovieJsonData();
+  const movieJsonData = getMovieJsonData();
 
   const handleScrollSearch = useCallback(() => {
-    console.log(window.innerHeight + document.documentElement.scrollTop);
-    console.log(document.documentElement.scrollHeight - 1500);
     if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.scrollHeight - 1500) {
-      console.log('addMovieSearchList22222222222');
       if (!isLoading) {
         getSearchMovie(
           dispatch,
@@ -44,10 +42,7 @@ function MovieSearch(props) {
           <div>
             <div data-uia="search-video-gallery" className="ltr-gncw81">
               {movieList.map((item, index) => {
-                const movieVal = window.common.getMovieVal(
-                  `${movieJsonData[Math.floor(Math.random() * 28)].movieVal}`,
-                  item.DOCID
-                );
+                const movieVal = getMovieVal(`${movieJsonData[Math.floor(Math.random() * 28)].movieVal}`, item.DOCID);
                 return (
                   <div data-uia="search-video-gallery-item" className="ltr-1cjyscz" key={index}>
                     <div className="title-card-container">
@@ -70,7 +65,7 @@ function MovieSearch(props) {
                                 src={item.posters.split('|')[0]}
                                 alt=""
                                 onClick={() => {
-                                  window.common.setWatchingMovieData(item, movieVal);
+                                  setWatchingMovieData(item, movieVal);
                                 }}
                               />
                               <div className="fallback-text-container" aria-hidden="true">
