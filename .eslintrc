@@ -28,7 +28,7 @@
   },
   "settings": {
     "react": {
-      "version": "detact"
+      "version": "detect"
     },
     "import/resolver": {
       "node": {
