@@ -1,15 +1,15 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const adventureReducer = createSlice({
-    name : 'adventureReducer',
-    initialState : [],
-    reducers : {
-        setAdventureList(state, action) {
-            let movieList = [...state];
-            movieList = action.payload;
-            return movieList;
-        }
+  name: 'adventureReducer',
+  initialState: [],
+  reducers: {
+    setAdventureList(state, action) {
+      let movieList = [...state];
+      movieList = action.payload;
+      return movieList;
     }
+  }
 });
 
 export let { setAdventureList } = adventureReducer.actions;
