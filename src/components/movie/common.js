@@ -1,10 +1,47 @@
 // KMDb에 영화 리스트 요청
 import axios from 'axios';
-import { setSpecialList } from '../../reducer/specialReducer.js';
-import { setLastYearList } from '../../reducer/lastYearReducer.js';
-import { setRecentReleaseList } from '../../reducer/recentReleaseReducer.js';
+import { setSpecialList } from '@/reducer/specialReducer.js';
+import { setLastYearList } from '@/reducer/lastYearReducer.js';
+import { setRecentReleaseList } from '@/reducer/recentReleaseReducer.js';
+import { getDate, isEmpty, isNotEmpty } from '@/common';
 
 const movieListCount = 60;
+
+export function specialMoviePlay(setMuted, setIsMovieStart, replay) {
+  // 메인 이미지 걷어낸 후 동영상 재생
+  let element = document.querySelector('.trailer-billboard');
+  if (element) {
+    element.classList.toggle('video-playing');
+    element.children[0].classList.toggle('dismiss-static', 'dismiss-mask');
+    element.children[0].children[0].className = 'nfp nf-player-container notranslate inactive NFPlayer';
+  }
+
+  // chrome 자동 재생 정책 > 음소거를 해야만 autoPlay 사용가능(동영상 자동 재생 시 원치 않는 사운드 재생 방지)
+  // specialMovie컴포넌트 로드 후 동영상을 강제로 재생시키고 사운드 설정.
+  // 동영상 강제 재생 후 사운드ON이 chrome 정책상 불가
+  const specialMovie = document.getElementById('specialMovie');
+  if (isEmpty(specialMovie)) return;
+
+  // 사운드OFF
+  if (localStorage.getItem('specialMovieMuted') === 'ON') {
+    specialMovie.play();
+    setMuted(true);
+  }
+  // 사운드ON
+  else if (localStorage.getItem('specialMovieMuted') === 'OFF') {
+    specialMovie.muted = true;
+    specialMovie.play();
+    specialMovie.muted = false;
+    setMuted(false);
+  } else {
+    specialMovie.play();
+    if (replay !== 'Y') {
+      specialMovie.muted = false;
+      setMuted(false);
+    }
+  }
+  setIsMovieStart(true);
+}
 
 export function getKMDBMovieOne(movieId, movieSeq) {
   const searchParam = {
@@ -38,8 +75,8 @@ export function getLastYearMovie(dispatch) {
     collection: 'kmdb_new2',
     detail: 'Y',
     sort: 'prodYear,0',
-    releaseDts: window.common.getDate(date),
-    releaseDte: window.common.getDate(),
+    releaseDts: getDate(date),
+    releaseDte: getDate(),
     ratedYn: 'Y',
     listCount: movieListCount
   };
@@ -55,8 +92,8 @@ export function getRecentReleaseMovie(dispatch) {
     collection: 'kmdb_new2',
     detail: 'Y',
     sort: 'prodYear,1',
-    releaseDts: window.common.getDate(date),
-    releaseDte: window.common.getDate(),
+    releaseDts: getDate(date),
+    releaseDte: getDate(),
     ratedYn: 'Y',
     listCount: 20
   };
@@ -93,7 +130,7 @@ export function getSearchMovie(dispatch, startCount, setStartCount, title, listC
 }
 
 async function getKMDbMovieList(searchParam, dispatch, setDataFunction) {
-  if (window.common.isNotEmpty(searchParam)) {
+  if (isNotEmpty(searchParam)) {
     const movieSearch = axios.create({
       baseURL: process.env.REACT_APP_KMDB_API_URL,
       timeout: 10000
@@ -106,11 +143,11 @@ async function getKMDbMovieList(searchParam, dispatch, setDataFunction) {
           return Promise.reject(err);
         })
         .then(res => {
-          if (window.common.isEmpty(res)) return;
+          if (isEmpty(res)) return;
 
           let movieInfo = res.data.Data[0].Result;
           if (movieInfo) {
-            movieInfo = movieInfo.filter(item => window.common.isNotEmpty(item.posters));
+            movieInfo = movieInfo.filter(item => isNotEmpty(item.posters));
             dispatch(setDataFunction(movieInfo));
           }
         });
@@ -120,7 +157,7 @@ async function getKMDbMovieList(searchParam, dispatch, setDataFunction) {
 }
 
 async function getMovieListInfinityScroll(searchParam, dispatch, setDataFunction, count, setIsLoading) {
-  if (window.common.isNotEmpty(searchParam)) {
+  if (isNotEmpty(searchParam)) {
     const movieSearch = axios.create({
       baseURL: process.env.REACT_APP_KMDB_API_URL,
       timeout: 10000
@@ -134,11 +171,11 @@ async function getMovieListInfinityScroll(searchParam, dispatch, setDataFunction
           return Promise.reject(err);
         })
         .then(res => {
-          if (window.common.isEmpty(res)) return;
+          if (isEmpty(res)) return;
 
           let movieInfo = res.data.Data[0].Result;
           if (movieInfo) {
-            movieInfo = movieInfo.filter(item => window.common.isNotEmpty(item.posters));
+            movieInfo = movieInfo.filter(item => isNotEmpty(item.posters));
             dispatch(setDataFunction(movieInfo));
           }
 
@@ -160,7 +197,7 @@ async function getSearchMovieList(
   listCount,
   setIsLoading
 ) {
-  if (window.common.isNotEmpty(searchParam)) {
+  if (isNotEmpty(searchParam)) {
     const movieSearch = axios.create({
       baseURL: process.env.REACT_APP_KMDB_API_URL,
       timeout: 10000
@@ -174,11 +211,11 @@ async function getSearchMovieList(
           return Promise.reject(err);
         })
         .then(res => {
-          if (window.common.isEmpty(res)) return;
+          if (isEmpty(res)) return;
 
           let movieInfo = res.data.Data[0].Result;
           if (movieInfo) {
-            movieInfo = movieInfo.filter(item => window.common.isNotEmpty(item.posters));
+            movieInfo = movieInfo.filter(item => isNotEmpty(item.posters));
             setStartCount(startCount + listCount);
             dispatch(setDataFunction(movieInfo));
             setIsLoading(false);
@@ -191,7 +228,7 @@ async function getSearchMovieList(
 
 async function getKMDbMovieOne(searchParam) {
   let movieInfo;
-  if (window.common.isNotEmpty(searchParam)) {
+  if (isNotEmpty(searchParam)) {
     const movieSearch = axios.create({
       baseURL: process.env.REACT_APP_KMDB_API_URL,
       timeout: 10000
@@ -204,7 +241,7 @@ async function getKMDbMovieOne(searchParam) {
           return Promise.reject(err);
         })
         .then(res => {
-          if (window.common.isEmpty(res)) return;
+          if (isEmpty(res)) return;
 
           movieInfo = res.data.Data[0].Result;
         });
