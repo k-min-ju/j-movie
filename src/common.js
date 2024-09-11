@@ -1,17 +1,22 @@
-import { setAnimationList } from '../reducer/animationReducer.js';
-import { setCrimeList } from '../reducer/crimeReducer.js';
-import { setThrillerList } from '../reducer/thrillerReducer.js';
-import { setDramaList } from '../reducer/dramaReducer.js';
-import { setSfList } from '../reducer/sfReducer.js';
-import { setActionList } from '../reducer/actionReducer.js';
-import { setAdventureList } from '../reducer/adventureReducer.js';
-import { setHighteenList } from '../reducer/highteenReducer.js';
-import { setHorrorList } from '../reducer/horrorReducer.js';
-import { setMeloList } from '../reducer/meloReducer.js';
-import { setMysteryList } from '../reducer/mysteryReducer';
-import { setRomanceList } from '../reducer/romanceReducer';
-import { setYouthList } from '../reducer/youthReducer';
-import { setComedyList } from '../reducer/comedyReducer';
+import { setAnimationList } from '@/reducer/animationReducer.js';
+import { setCrimeList } from '@/reducer/crimeReducer.js';
+import { setThrillerList } from '@/reducer/thrillerReducer.js';
+import { setDramaList } from '@/reducer/dramaReducer.js';
+import { setSfList } from '@/reducer/sfReducer.js';
+import { setActionList } from '@/reducer/actionReducer.js';
+import { setHighteenList } from '@/reducer/highteenReducer.js';
+import { setHorrorList } from '@/reducer/horrorReducer.js';
+import { setMeloList } from '@/reducer/meloReducer.js';
+import { setMysteryList } from '@/reducer/mysteryReducer';
+import { setRomanceList } from '@/reducer/romanceReducer';
+import { setYouthList } from '@/reducer/youthReducer';
+import { setComedyList } from '@/reducer/comedyReducer';
+import { setFamilyList } from '@/reducer/familyReducer';
+
+export const googleLogOut = () => {
+  sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('loginType');
+};
 
 export function isEmpty(value) {
   return value === null || value === undefined || value === '';
@@ -87,7 +92,7 @@ export function getGenreJsonData() {
     },
     {
       genre: '가족',
-      setReducerFunc: setAdventureList,
+      setReducerFunc: setFamilyList,
       reducer: 'familyReducer',
       genreTitle: '가족'
     },
@@ -224,7 +229,7 @@ export function setWatchingMovieData(paramData, movieVal) {
   let movieData = JSON.parse(JSON.stringify(paramData));
   movieData.movieVal = movieVal;
 
-  if (window.common.isEmpty(localStorage.getItem('watchingMovieData'))) {
+  if (isEmpty(localStorage.getItem('watchingMovieData'))) {
     localStorage.setItem('watchingMovieData', JSON.stringify([movieData]));
   } else {
     const existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
@@ -270,7 +275,7 @@ export function removeWatchingData(docId) {
 
   let existingData;
   localStorage.removeItem(docId);
-  if (window.common.isNotEmpty(localStorage.getItem('watchingMovieData'))) {
+  if (isNotEmpty(localStorage.getItem('watchingMovieData'))) {
     existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
     existingData = existingData.filter(item => item.DOCID !== docId);
     localStorage.setItem('watchingMovieData', JSON.stringify(existingData));
