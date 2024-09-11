@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Browse from './Browse';
-import Login from './Login';
-import Watch from './Watch';
-import * as common from './components/common';
-
-window.common = common;
+import Browse from '@/Browse';
+import Login from '@/Login';
+import Watch from '@/Watch';
 
 function App() {
   useEffect(() => {
