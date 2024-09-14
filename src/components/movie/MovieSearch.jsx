@@ -1,25 +1,27 @@
 import React, { useCallback, useEffect } from 'react';
-import { addMovieSearchList } from '@/reducer/movieSearchReducer.js';
-import { getSearchMovie } from '@/components/movie/common';
-import { getMovieJsonData, getMovieVal, setWatchingMovieData } from '@/common';
+import { movieSearchReducer } from '@/reducer';
+import { getMovieVal, KMDBMovieAPI, setWatchingMovieData } from '@/components/movie/common';
+import { getMovieJsonData } from '@/common';
 
 function MovieSearch(props) {
   if (props.movieList.length === 0) return;
-  let { dispatch, startCount, setStartCount, inputValueRef, isLoading, setIsLoading } = props;
-  let movieList = [...props.movieList];
+  const { dispatch, startCount, setStartCount, inputValueRef, isLoading, setIsLoading } = props;
+  const movieList = [...props.movieList];
+
+  const { getSearchMovie } = KMDBMovieAPI();
 
   const movieJsonData = getMovieJsonData();
 
-  const handleScrollSearch = useCallback(() => {
+  const handleScrollSearch = useCallback(async () => {
     if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.scrollHeight - 1500) {
       if (!isLoading) {
-        getSearchMovie(
+        await getSearchMovie(
           dispatch,
           startCount,
           setStartCount,
           inputValueRef.current,
           40,
-          addMovieSearchList,
+          movieSearchReducer.actions.addMovieSearchList,
           setIsLoading
         );
       }

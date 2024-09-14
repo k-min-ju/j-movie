@@ -5,7 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { getMovieJsonData, isNotEmpty, removeWatchingData } from '@/common';
+import { getMovieJsonData } from '@/common';
+import { removeWatchingData } from '@/components/movie/common';
 
 let slidesPer1 = 7;
 let slidesPer2 = 5;
@@ -14,8 +15,8 @@ let slidesPer4 = 3;
 
 function WatchingMovie(props) {
   if (props.movieList.length === 0) return;
-  let [movieList, setMovieList] = useState([...props.movieList]);
-  let [isVisible, setIsVisible] = useState(true);
+  const [movieList, setMovieList] = useState([...props.movieList]);
+  const [isVisible, setIsVisible] = useState(true);
 
   return (
     <div>
@@ -91,22 +92,12 @@ function Watching(props) {
                     }}
                   >
                     {movieList.map((item, index) => {
-                      let movieVal;
-                      let isDuplicate = false;
-                      let existingData;
-                      if (isNotEmpty(localStorage.getItem('watchingMovieData'))) {
-                        existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
-                        existingData = existingData.find(movie => {
-                          if (movie.DOCID == item.DOCID) {
-                            isDuplicate = true;
-                            return movie;
-                          }
-                        });
-                      }
-                      if (isDuplicate) {
-                        movieVal = existingData.movieVal;
-                      } else {
-                        movieVal = `${movieJsonData[Math.floor(Math.random() * 28)].movieVal}`;
+                      let movieVal = `${movieJsonData[Math.floor(Math.random() * 28)].movieVal}`;
+                      if (localStorage.getItem('watchingMovieData')) {
+                        const existingData = JSON.parse(localStorage.getItem('watchingMovieData')).find(
+                          movie => movie.DOCID === item.DOCID
+                        );
+                        if (existingData) movieVal = existingData.movieVal;
                       }
                       return (
                         <SwiperSlide key={index}>
@@ -138,7 +129,7 @@ function Watching(props) {
                                       onClick={() => {
                                         const docId = item.movieId + item.movieSeq;
                                         removeWatchingMovie(index);
-                                        removeWatchingData(docId);
+                                        if (docId) removeWatchingData(docId);
                                       }}
                                     >
                                       <svg

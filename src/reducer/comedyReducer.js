@@ -12,6 +12,4 @@ const comedyReducer = createSlice({
   }
 });
 
-export let { setComedyList } = comedyReducer.actions;
-
 export default comedyReducer;

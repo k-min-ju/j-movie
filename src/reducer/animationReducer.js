@@ -12,6 +12,4 @@ const animationReducer = createSlice({
   }
 });
 
-export let { setAnimationList } = animationReducer.actions;
-
 export default animationReducer;

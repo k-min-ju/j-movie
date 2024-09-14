@@ -1,17 +1,20 @@
-import { setAnimationList } from '@/reducer/animationReducer.js';
-import { setCrimeList } from '@/reducer/crimeReducer.js';
-import { setThrillerList } from '@/reducer/thrillerReducer.js';
-import { setDramaList } from '@/reducer/dramaReducer.js';
-import { setSfList } from '@/reducer/sfReducer.js';
-import { setActionList } from '@/reducer/actionReducer.js';
-import { setHighteenList } from '@/reducer/highteenReducer.js';
-import { setHorrorList } from '@/reducer/horrorReducer.js';
-import { setMeloList } from '@/reducer/meloReducer.js';
-import { setMysteryList } from '@/reducer/mysteryReducer';
-import { setRomanceList } from '@/reducer/romanceReducer';
-import { setYouthList } from '@/reducer/youthReducer';
-import { setComedyList } from '@/reducer/comedyReducer';
-import { setFamilyList } from '@/reducer/familyReducer';
+import {
+  actionReducer,
+  adventureReducer,
+  animationReducer,
+  comedyReducer,
+  crimeReducer,
+  dramaReducer,
+  familyReducer,
+  highteenReducer,
+  horrorReducer,
+  meloReducer,
+  mysteryReducer,
+  romanceReducer,
+  sfReducer,
+  thrillerReducer,
+  youthReducer
+} from '@/reducer';
 
 export const googleLogOut = () => {
   sessionStorage.removeItem('accessToken');
@@ -27,7 +30,7 @@ export function isNotEmpty(value) {
 }
 
 export function getDate(date) {
-  if (isEmpty(date)) {
+  if (!date) {
     date = new Date();
   }
   let today = '';
@@ -44,91 +47,91 @@ export function getGenreJsonData() {
   return [
     {
       genre: '애니메이션',
-      setReducerFunc: setAnimationList,
+      setReducerFunc: animationReducer.actions.setAnimationList,
       reducer: 'animationReducer',
       genreTitle: '애니메이션'
     },
     {
       genre: '범죄',
-      setReducerFunc: setCrimeList,
+      setReducerFunc: crimeReducer.actions.setCrimeList,
       reducer: 'crimeReducer',
       genreTitle: '범죄'
     },
     {
       genre: '스릴러',
-      setReducerFunc: setThrillerList,
+      setReducerFunc: thrillerReducer.actions.setThrillerList,
       reducer: 'thrillerReducer',
       genreTitle: '스릴러'
     },
     {
       genre: '드라마',
-      setReducerFunc: setDramaList,
+      setReducerFunc: dramaReducer.actions.setDramaList,
       reducer: 'dramaReducer',
       genreTitle: '드라마'
     },
     {
       genre: 'SF',
-      setReducerFunc: setSfList,
+      setReducerFunc: sfReducer.actions.setSfList,
       reducer: 'sfReducer',
       genreTitle: 'SF'
     },
     {
       genre: '액션',
-      setReducerFunc: setActionList,
+      setReducerFunc: actionReducer.actions.setActionList,
       reducer: 'actionReducer',
       genreTitle: '액션'
     },
     {
       genre: '모험',
-      setReducerFunc: setSfList,
+      setReducerFunc: adventureReducer.actions.setAdventureList,
       reducer: 'adventureReducer',
       genreTitle: '모험'
     },
     {
       genre: '코메디',
-      setReducerFunc: setComedyList,
+      setReducerFunc: comedyReducer.actions.setComedyList,
       reducer: 'comedyReducer',
       genreTitle: '코미디'
     },
     {
       genre: '가족',
-      setReducerFunc: setFamilyList,
+      setReducerFunc: familyReducer.actions.setFamilyList,
       reducer: 'familyReducer',
       genreTitle: '가족'
     },
     {
       genre: '하이틴',
-      setReducerFunc: setHighteenList,
+      setReducerFunc: highteenReducer.actions.setHighteenList,
       reducer: 'highteenReducer',
       genreTitle: '하이틴'
     },
     {
       genre: '공포',
-      setReducerFunc: setHorrorList,
+      setReducerFunc: horrorReducer.actions.setHorrorList,
       reducer: 'horrorReducer',
       genreTitle: '공포'
     },
     {
       genre: '멜로',
-      setReducerFunc: setMeloList,
+      setReducerFunc: meloReducer.actions.setMeloList,
       reducer: 'meloReducer',
       genreTitle: '멜로'
     },
     {
       genre: '미스터리',
-      setReducerFunc: setMysteryList,
+      setReducerFunc: mysteryReducer.actions.setMysteryList,
       reducer: 'mysteryReducer',
       genreTitle: '미스터리'
     },
     {
       genre: '로맨스',
-      setReducerFunc: setRomanceList,
+      setReducerFunc: romanceReducer.actions.setRomanceList,
       reducer: 'romanceReducer',
       genreTitle: '로맨스'
     },
     {
       genre: '청춘영화',
-      setReducerFunc: setYouthList,
+      setReducerFunc: youthReducer.actions.setYouthList,
       reducer: 'youthReducer',
       genreTitle: '청춘'
     }
@@ -222,62 +225,4 @@ export function getMovieJsonData() {
       movieVal: 'MK059322_P02'
     }
   ];
-}
-
-// 시청중인 영화를 보여주기 위한 함수
-export function setWatchingMovieData(paramData, movieVal) {
-  let movieData = JSON.parse(JSON.stringify(paramData));
-  movieData.movieVal = movieVal;
-
-  if (isEmpty(localStorage.getItem('watchingMovieData'))) {
-    localStorage.setItem('watchingMovieData', JSON.stringify([movieData]));
-  } else {
-    const existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
-    let isDuplicate = false;
-    existingData.find(movie => {
-      if (movie.DOCID == movieData.DOCID) {
-        isDuplicate = true;
-        return true;
-      }
-    });
-    if (isDuplicate == false) {
-      existingData.push(movieData);
-      localStorage.setItem('watchingMovieData', JSON.stringify(existingData));
-    }
-  }
-}
-
-export function getMovieVal(movieVal, docId) {
-  let result;
-  let isDuplicate = false;
-  let existingData;
-  if (isNotEmpty(localStorage.getItem('watchingMovieData'))) {
-    existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
-    existingData = existingData.find(movie => {
-      if (movie.DOCID === docId) {
-        isDuplicate = true;
-        return movie;
-      }
-    });
-  }
-  if (isDuplicate) {
-    result = existingData.movieVal;
-  } else {
-    result = movieVal;
-  }
-
-  return result;
-}
-
-// 시청중인 영화 삭제
-export function removeWatchingData(docId) {
-  if (isEmpty(docId)) return;
-
-  let existingData;
-  localStorage.removeItem(docId);
-  if (isNotEmpty(localStorage.getItem('watchingMovieData'))) {
-    existingData = JSON.parse(localStorage.getItem('watchingMovieData'));
-    existingData = existingData.filter(item => item.DOCID !== docId);
-    localStorage.setItem('watchingMovieData', JSON.stringify(existingData));
-  }
 }

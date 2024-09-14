@@ -12,6 +12,4 @@ const crimeReducer = createSlice({
   }
 });
 
-export let { setCrimeList } = crimeReducer.actions;
-
 export default crimeReducer;

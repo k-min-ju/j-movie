@@ -12,6 +12,4 @@ const sfReducer = createSlice({
   }
 });
 
-export let { setSfList } = sfReducer.actions;
-
 export default sfReducer;

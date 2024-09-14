@@ -23,6 +23,4 @@ const movieSearchReducer = createSlice({
   }
 });
 
-export let { setMovieSearchList, addMovieSearchList } = movieSearchReducer.actions;
-
 export default movieSearchReducer;

@@ -12,6 +12,4 @@ const familyReducer = createSlice({
   }
 });
 
-export let { setFamilyList } = familyReducer.actions;
-
 export default familyReducer;

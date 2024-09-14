@@ -12,6 +12,4 @@ const dramaReducer = createSlice({
   }
 });
 
-export let { setDramaList } = dramaReducer.actions;
-
 export default dramaReducer;

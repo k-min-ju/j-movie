@@ -12,6 +12,4 @@ const romanceReducer = createSlice({
   }
 });
 
-export let { setRomanceList } = romanceReducer.actions;
-
 export default romanceReducer;

@@ -1,9 +1,8 @@
 import { useGoogleLogin } from '@react-oauth/google';
-import { isNotEmpty } from '@/common';
 
 export default function GoogleLoginButton(props) {
   const loginSuccess = res => {
-    if (isNotEmpty(res.access_token)) {
+    if (res.access_token) {
       sessionStorage.setItem('accessToken', res.access_token);
       sessionStorage.setItem('loginType', 'G');
       props.navigate('/Browse');

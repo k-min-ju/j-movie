@@ -5,7 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { getMovieJsonData, getMovieVal, setWatchingMovieData } from '@/common';
+import { getMovieJsonData } from '@/common';
+import { getMovieVal, setWatchingMovieData } from '@/components/movie/common';
 
 let slidesPer1 = 7;
 let slidesPer2 = 5;

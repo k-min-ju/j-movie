@@ -12,6 +12,4 @@ const thrillerReducer = createSlice({
   }
 });
 
-export let { setThrillerList } = thrillerReducer.actions;
-
 export default thrillerReducer;

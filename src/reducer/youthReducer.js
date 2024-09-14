@@ -12,6 +12,4 @@ const youthReducer = createSlice({
   }
 });
 
-export let { setYouthList } = youthReducer.actions;
-
 export default youthReducer;

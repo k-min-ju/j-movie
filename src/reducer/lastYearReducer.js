@@ -12,6 +12,4 @@ const lastYearReducer = createSlice({
   }
 });
 
-export let { setLastYearList } = lastYearReducer.actions;
-
 export default lastYearReducer;

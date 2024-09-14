@@ -12,6 +12,4 @@ const mysteryReducer = createSlice({
   }
 });
 
-export let { setMysteryList } = mysteryReducer.actions;
-
 export default mysteryReducer;

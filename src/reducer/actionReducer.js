@@ -12,6 +12,4 @@ const actionReducer = createSlice({
   }
 });
 
-export let { setActionList } = actionReducer.actions;
-
 export default actionReducer;

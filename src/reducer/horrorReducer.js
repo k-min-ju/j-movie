@@ -12,6 +12,4 @@ const horrorReducer = createSlice({
   }
 });
 
-export let { setHorrorList } = horrorReducer.actions;
-
 export default horrorReducer;

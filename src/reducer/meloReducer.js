@@ -12,6 +12,4 @@ const meloReducer = createSlice({
   }
 });
 
-export let { setMeloList } = meloReducer.actions;
-
 export default meloReducer;

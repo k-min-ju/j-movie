@@ -12,6 +12,4 @@ const recentReleaseReducer = createSlice({
   }
 });
 
-export let { setRecentReleaseList } = recentReleaseReducer.actions;
-
 export default recentReleaseReducer;

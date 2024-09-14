@@ -12,6 +12,4 @@ const adventureReducer = createSlice({
   }
 });
 
-export let { setAdventureList } = adventureReducer.actions;
-
 export default adventureReducer;

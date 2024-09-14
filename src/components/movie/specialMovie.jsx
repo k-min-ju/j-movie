@@ -1,6 +1,6 @@
 import React from 'react';
 import { specialMoviePlay } from '@/components/movie/common';
-import { Rating12Icon, Rating15Icon, Rating18Icon, RatingAllIcon } from '@/components/icon';
+import { Rating12, Rating15, Rating18, RatingAll } from '@/components/icon';
 
 function SpecialMovie(props) {
   if (props.movieList.length === 0) return;
@@ -259,16 +259,16 @@ function SpecialMovie(props) {
 const RatingViewer = ({ rating }) => {
   switch (rating) {
     case '18세관람가':
-      return <Rating18Icon />;
+      return <Rating18 />;
 
     case '15세관람가':
-      return <Rating15Icon />;
+      return <Rating15 />;
 
     case '12세관람가':
-      return <Rating12Icon />;
+      return <Rating12 />;
 
     default:
-      return <RatingAllIcon />;
+      return <RatingAll />;
   }
 };
 

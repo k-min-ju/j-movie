@@ -5,7 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { getMovieVal, setWatchingMovieData } from '@/common';
+import { getMovieVal, setWatchingMovieData } from '@/components/movie/common';
+import { getMovieJsonData } from '@/common';
 
 let slidesPer1 = 7;
 let slidesPer2 = 5;
@@ -13,8 +14,8 @@ let slidesPer3 = 4;
 let slidesPer4 = 3;
 
 function RecentReleaseMovie(props) {
-  if (props.movieList.length == 0) return;
-  let movieList = [...props.movieList];
+  if (props.movieList.length === 0) return;
+  const movieList = [...props.movieList];
 
   const pagination = {
     clickable: true,

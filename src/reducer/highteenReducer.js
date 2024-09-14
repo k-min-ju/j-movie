@@ -12,6 +12,4 @@ const highteenReducer = createSlice({
   }
 });
 
-export let { setHighteenList } = highteenReducer.actions;
-
 export default highteenReducer;

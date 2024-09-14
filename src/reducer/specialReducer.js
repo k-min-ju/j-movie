@@ -12,6 +12,4 @@ const specialReducer = createSlice({
   }
 });
 
-export let { setSpecialList } = specialReducer.actions;
-
 export default specialReducer;

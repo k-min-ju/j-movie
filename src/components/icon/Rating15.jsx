@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Rating15Icon() {
+export default function Rating15() {
   return (
     <>
       <path
