@@ -26,7 +26,7 @@ function WatchingMovie(props) {
 }
 
 function Watching(props) {
-  let { movieList, setMovieList, setIsVisible } = props;
+  const { movieList, setMovieList, setIsVisible } = props;
 
   const pagination = {
     clickable: true,
@@ -99,6 +99,7 @@ function Watching(props) {
                         );
                         if (existingData) movieVal = existingData.movieVal;
                       }
+
                       return (
                         <SwiperSlide key={index}>
                           <div className={'slider-item slider-item-' + index} style={{ width: '100%' }}>

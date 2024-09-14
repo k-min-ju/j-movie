@@ -229,23 +229,13 @@ export function setWatchingMovieData(paramData, movieVal) {
   const watchingMovieData = JSON.parse(localStorage.getItem('watchingMovieData'));
   if (watchingMovieData) {
     const existingData = watchingMovieData.find(movie => movie.DOCID === movieData.DOCID);
-    if (existingData) {
-      watchingMovieData.push(existingData);
+    if (!existingData) {
+      watchingMovieData.push(movieData);
       localStorage.setItem('watchingMovieData', JSON.stringify(watchingMovieData));
-    } else localStorage.setItem('watchingMovieData', JSON.stringify([watchingMovieData]));
+    }
   } else {
     localStorage.setItem('watchingMovieData', JSON.stringify([movieData]));
   }
-
-  // if (!watchingMovieData) {
-  //   localStorage.setItem('watchingMovieData', JSON.stringify([movieData]));
-  // } else {
-  //   const existingData = watchingMovieData.find(movie => movie.DOCID === movieData.DOCID);
-  //   if (!existingData) {
-  //     // existingData.push(movieData);
-  //     localStorage.setItem('watchingMovieData', JSON.stringify(movieData));
-  //   }
-  // }
 }
 
 export function getMovieVal(movieVal, docId) {
