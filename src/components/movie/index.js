@@ -1,6 +1,6 @@
 import Active from '@/components/movie/Active';
+import CustomSwiper from '@/components/movie/CustomSwiper';
 import GenreMovieCarousel from '@/components/movie/GenreMovieCarousel';
-import LastYearMovie from '@/components/movie/LastYearMovie';
 import Loading from '@/components/movie/Loading';
 import MainView from '@/components/movie/MainView';
 import MovieMutedBtn from '@/components/movie/MovieMutedBtn';
@@ -10,7 +10,6 @@ import NotiPlay from '@/components/movie/NotiPlay';
 import Passive from '@/components/movie/Passive';
 import PlayBack from '@/components/movie/PlayBack';
 import PlayForward from '@/components/movie/PlayForward';
-import RecentReleaseMovie from '@/components/movie/RecentReleaseMovie';
 import SoundBar from '@/components/movie/SoundBar';
 import SpecialMovie from '@/components/movie/SpecialMovie';
 import Timer from '@/components/movie/Timer';
@@ -19,8 +18,8 @@ import WatchingMovie from '@/components/movie/WatchingMovie';
 
 export {
   Active,
+  CustomSwiper,
   GenreMovieCarousel,
-  LastYearMovie,
   Loading,
   MainView,
   MovieMutedBtn,
@@ -30,7 +29,6 @@ export {
   Passive,
   PlayBack,
   PlayForward,
-  RecentReleaseMovie,
   SoundBar,
   SpecialMovie,
   Timer,
