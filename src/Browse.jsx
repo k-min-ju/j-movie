@@ -55,8 +55,8 @@ function Browse() {
     inputValueRef.current = inputValue;
 
     if (!debounceFunctionRef.current) {
-      debounceFunctionRef.current = debounce(() => {
-        fetchSearchResults(inputValueRef.current);
+      debounceFunctionRef.current = debounce(async () => {
+        await fetchSearchResults(inputValueRef.current);
       }, 500);
     }
 
@@ -73,7 +73,7 @@ function Browse() {
 
   return (
     <>
-      <div id="appMountPoint">
+      <div>
         <div className="netflix-sans-font-loaded">
           <div dir="ltr" className="extended-diacritics-language">
             <div>
@@ -224,7 +224,7 @@ function Browse() {
                   </div>
                 </div>
 
-                <div className="mainView" id="main-view">
+                <div className="mainView">
                   {isSearchStart ? (
                     <MovieSearch
                       movieList={movieSearchReducerList}
