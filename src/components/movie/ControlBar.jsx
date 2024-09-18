@@ -109,7 +109,7 @@ export default function ControlBar({
         <div className="ltr-vf5me0" style={{ alignItems: 'normal', flexGrow: '1', justifyContent: 'normal' }}>
           <div className="ltr-14rufaj" style={{ minWidth: '3rem', width: '3rem' }} />
           <div className="ltr-17qz7j2" style={{ alignItems: 'normal', flexGrow: '1', justifyContent: 'normal' }}>
-            <div className="medium ltr-er76rf" id="movieTitle"></div>
+            <div className="medium ltr-er76rf" id="movieTitle" />
           </div>
         </div>
       </div>
