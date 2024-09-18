@@ -1,8 +1,7 @@
 export default function PlayBack() {
-  console.log('123123');
   return (
     <div className="playback-notification playback-notification--back-10" data-uia="watch-video-notification-back-10">
-      <div className="playback-notification-background"></div>
+      <div className="playback-notification-background" />
       <div className="playback-notification-icon large ltr-1evcx25" role="presentation">
         <svg
           width="24"

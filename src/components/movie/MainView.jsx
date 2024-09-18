@@ -61,18 +61,22 @@ export default function MainView(props) {
   }
 
   useEffect(() => {
-    // 영화 리스트 조회
-    getSpecialMovie(dispatch);
-    getLastYearMovie(dispatch);
-    getRecentReleaseMovie(dispatch);
-    getMovieCardList(dispatch, genreArray, currentCardListCnt, setCurrentCardListCnt, setIsLoading);
-
     const accessToken = sessionStorage.getItem('accessToken');
     const loginType = sessionStorage.getItem('loginType');
     if (accessToken && loginType) {
       location.href = '/login';
       return;
     }
+
+    const fetchData = async () => {
+      // 영화 리스트 조회
+      await getSpecialMovie(dispatch);
+      await getLastYearMovie(dispatch);
+      await getRecentReleaseMovie(dispatch);
+      await getMovieCardList(dispatch, genreArray, currentCardListCnt, setCurrentCardListCnt, setIsLoading);
+    };
+
+    fetchData().then();
 
     const specialMovieInit = () => {
       setTimeout(() => {
@@ -103,7 +107,7 @@ export default function MainView(props) {
     };
   }, []);
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback(async () => {
     // 스크롤 시 상단 바 고정
     if (document.documentElement.scrollTop > 0) {
       document.querySelector('.pinning-header-container').style = 'background: rgb(20,20,20);';
@@ -118,7 +122,7 @@ export default function MainView(props) {
       window.innerHeight + document.documentElement.scrollTop > document.documentElement.scrollHeight - 1000 &&
       !isLoading
     ) {
-      getMovieCardList(dispatch, genreArray, currentCardListCnt, setCurrentCardListCnt, setIsLoading);
+      await getMovieCardList(dispatch, genreArray, currentCardListCnt, setCurrentCardListCnt, setIsLoading);
     }
   }, [currentCardListCnt, isLoading]);
 

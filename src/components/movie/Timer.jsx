@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { IdleTimerProvider } from 'react-idle-timer';
 import { fullScreen, moviePlayBtn } from '@/components/movie/common';
 
-export default function Timer(props) {
-  const { setStatus, isPlayMovie, setIsPlayMovie, videoRef, isFullScreen, setIsFullScreen } = props;
+export default function Timer({ setStatus, isPlayMovie, setIsPlayMovie, videoRef, isFullScreen, setIsFullScreen }) {
   const [changeTimeout, setChangeTimeout] = useState();
   let timeout;
 

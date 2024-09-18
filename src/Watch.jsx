@@ -214,8 +214,6 @@ function Watch() {
                     setCurrentPlayTime={setCurrentPlayTime}
                     isUpdateNeed={isUpdateNeed}
                     setIsUpdateNeed={setIsUpdateNeed}
-                    isFullScreen={isFullScreen}
-                    setIsFullScreen={setIsFullScreen}
                     isInit={isInit}
                     setIsInit={setIsInit}
                   />
