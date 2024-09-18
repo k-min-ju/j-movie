@@ -3,8 +3,8 @@
 
 <p>
 이 프로젝트는 Netflix의 사용자 친화적인 UI/UX를 참고하여, React를 공부하면서 영화 시청을 위한 웹 애플리케이션을 개발하는 것을 목표로 하였습니다. 
-Back-End 작업 없이 Front-End만을 활용하여 프로젝트를 진행하였으며, Redux Toolkit을 사용하여 효율적인 상태 관리를 구현하였습니다.
-Webpack과 Babel을 활용하여 프로젝트의 빌드 및 번들링을 진행했고, Amazon EC2와 NginX를 통해 안정적인 웹 호스팅 및 서버 배포를 구현했습니다.
+Back-End 작업 없이 Front-End만을 활용하여 프로젝트를 진행하였으며, Redux Toolkit을 사용하여 영화 상태 관리를 구현하였습니다.
+Webpack과 Babel을 활용하여 프로젝트의 빌드 및 번들링을 진행했고, Amazon EC2와 NginX를 통해 웹 호스팅 및 서버 배포를 구현했습니다.
 </p>
 
 
