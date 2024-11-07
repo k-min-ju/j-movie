@@ -1,22 +1,9 @@
-import { googleLogOut } from '@/common';
+import { storageClear } from '@/common';
 
 export default function AccountDropDown() {
   const doLogout = () => {
-    const loginType = sessionStorage.getItem('loginType');
-    switch (loginType) {
-      case 'G':
-        googleLogOut();
-        location.href = '/login';
-        break;
-      case 'N':
-        sessionStorage.removeItem('loginType');
-        location.href = '/login';
-        break;
-      default:
-        sessionStorage.removeItem('loginType');
-        location.href = '/login';
-        break;
-    }
+    storageClear();
+    location.href = '/login';
   };
 
   return (

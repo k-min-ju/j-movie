@@ -63,7 +63,7 @@ export default function MainView(props) {
   useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken');
     const loginType = sessionStorage.getItem('loginType');
-    if (accessToken && loginType) {
+    if (!accessToken && !loginType) {
       location.href = '/login';
       return;
     }
