@@ -2996,7 +2996,7 @@ body, html {
 
 @media screen and (min-width: 0) and (max-width: 480px) and (max-aspect-ratio: 4/3) {
     body, html {
-        font-size: 1.5vw
+        font-size: 3.5vw
     }
 }
 
