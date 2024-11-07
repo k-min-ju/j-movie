@@ -1,36 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { createBrowserHistory } from 'history';
 import { GoogleLoginButton } from '@/components/google';
-import { googleLogOut } from '@/common';
 import './LoginMain.css';
 
 function Login() {
-  useEffect(() => {
-    // 브라우저 뒤로가기 제어
-    const history = createBrowserHistory();
-    const listenBackEvent = () => {
-      // 뒤로가기 할 때 수행할 동작
-      const url = process.env.REACT_APP_NETFLIX_URL.split('|');
-      const validUrl = url.filter(url => url === location.origin);
-      const loginType = sessionStorage.getItem('loginType');
-      if (loginType === 'G' && validUrl.length > 0 && (location.pathname === '/' || location.pathname === 'login')) {
-        // 구글 로그아웃 처리
-        googleLogOut();
-      }
-    };
-
-    const unlistenHistoryEvent = history.listen(({ action }) => {
-      // 브라우저 뒤로가기, 앞으로가기
-      if (action === 'POP') {
-        listenBackEvent();
-      }
-    });
-
-    return window.addEventListener('popstate', unlistenHistoryEvent);
-  }, []);
-
   useEffect(() => {
     if (localStorage.getItem('rememberId') === 'Y') {
       document.getElementById('rememberId').checked = true;

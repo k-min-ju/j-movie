@@ -16,31 +16,17 @@ import {
   youthReducer
 } from '@/reducer';
 
-export const googleLogOut = () => {
+export const storageClear = () => {
   sessionStorage.removeItem('accessToken');
   sessionStorage.removeItem('loginType');
 };
 
-export function isEmpty(value) {
-  return value === null || value === undefined || value === '';
-}
-
-export function isNotEmpty(value) {
-  return value !== null && value !== '';
-}
-
 export function getDate(date) {
-  if (!date) {
-    date = new Date();
-  }
-  let today = '';
-  let yyyy = date.getFullYear();
-  let mm = date.getMonth() + 1;
-  if (mm < 10) mm = '0' + mm;
-  let dd = date.getDate();
-  if (dd < 10) dd = '0' + dd;
-  today = yyyy + '' + mm + '' + dd;
-  return today;
+  if (!date) date = new Date();
+  const yyyy = date.getFullYear().toString();
+  const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+  const dd = date.getDate().toString().padStart(2, '0');
+  return yyyy + mm + dd;
 }
 
 export function getGenreJsonData() {

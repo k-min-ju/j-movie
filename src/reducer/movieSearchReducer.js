@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { isNotEmpty } from '@/common';
 
 const movieSearchReducer = createSlice({
   name: 'movieSearchReducer',
@@ -13,7 +12,7 @@ const movieSearchReducer = createSlice({
     addMovieSearchList(state, action) {
       let movieList = [...state];
       let newMovieList;
-      if (isNotEmpty(action.payload)) {
+      if (action.payload) {
         newMovieList = movieList.concat(action.payload);
       } else {
         newMovieList = movieList;
