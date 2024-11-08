@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
+import { CustomSwiper } from '@/components/movie';
+import { Remove } from '@/components/icon';
+import { removeWatchingData } from '@/components/movie/common';
+import { getMovieJsonData } from '@/common';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import Remove from '../icon/Remove';
-import { getMovieJsonData } from '@/common';
-import { removeWatchingData } from '@/components/movie/common';
-import { CustomSwiper } from '@/components/movie';
 
 function WatchingMovie(props) {
   if (props.movieList.length === 0) return;
