@@ -1,11 +1,14 @@
 import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 
-export default function GoogleLoginButton(props) {
+export default function GoogleLoginButton() {
+  const navigate = useNavigate();
+
   const loginSuccess = res => {
     if (res.access_token) {
       sessionStorage.setItem('accessToken', res.access_token);
       sessionStorage.setItem('loginType', 'G');
-      props.navigate('/Browse');
+      navigate('/Browse');
     }
   };
 
