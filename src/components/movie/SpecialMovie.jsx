@@ -2,9 +2,8 @@ import React from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import PlayArrow from '../icon/PlayArrow';
 import { specialMoviePlay } from '@/components/movie/common';
-import { Info, Rating12, Rating15, Rating18, RatingAll } from '@/components/icon';
+import { Info, PlayArrow, Rating12, Rating15, Rating18, RatingAll } from '@/components/icon';
 
 function SpecialMovie({
   movieList,
