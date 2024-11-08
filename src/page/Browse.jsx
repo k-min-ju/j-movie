@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MainView, MovieSearch } from '@/components/movie';
-import { KMDBMovieAPI } from '@/components/movie/common';
 import { movieSearchReducer } from '@/reducer';
+import { KMDBMovieAPI } from '@/components/movie/common';
+import { MainView, MovieSearch } from '@/components/movie';
 import { AccountDropDown, AlarmDropDown } from '@/components/dropDown';
-import './Browse.css';
 import { Close, Notification, Search } from '@/components/icon';
+import '@/style/browse.css';
 
 function Browse() {
   const dispatch = useDispatch();

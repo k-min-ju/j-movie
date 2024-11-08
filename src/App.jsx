@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Browse from '@/Browse';
-import Login from '@/Login';
-import Watch from '@/Watch';
+import { Browse, Login, Watch } from '@/page';
 
 function App() {
   useEffect(() => {
