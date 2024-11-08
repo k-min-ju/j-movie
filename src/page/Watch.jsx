@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { convertToHHMM, KMDBMovieAPI, volumeSvg } from '@/components/movie/common';
-import '@/Browse.css';
+import '@/style/browse.css';
 import {
   Active,
   Loading,
