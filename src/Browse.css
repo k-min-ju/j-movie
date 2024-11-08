@@ -3008,19 +3008,19 @@ body, html {
 
 @media screen and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4/3) {
     body, html {
-        font-size: .75vw
+        font-size: .95vw
     }
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1600px) and (max-aspect-ratio: 4/3) {
     body, html {
-        font-size: .75vw
+        font-size: .95vw
     }
 }
 
 @media screen and (min-width: 1601px) and (max-width: 1920px) and (max-aspect-ratio: 4/3) {
     body, html {
-        font-size: .75vw
+        font-size: .95vw
     }
 }
 
@@ -3044,19 +3044,19 @@ body, html {
 
 @media screen and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) {
     body, html {
-        font-size: .85vw
+        font-size: .95vw
     }
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1600px) and (orientation: landscape) {
     body, html {
-        font-size: .85vw
+        font-size: .95vw
     }
 }
 
 @media screen and (min-width: 1601px) and (max-width: 1920px) and (orientation: landscape) {
     body, html {
-        font-size: .85vw
+        font-size: .95vw
     }
 }
 
