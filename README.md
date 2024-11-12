@@ -41,7 +41,7 @@ chrome 브라우저 설정 > 개인 정보 보호 및 보안 > 사이트 설정 
 </pre>
 
 <pre>
-J-MOVIE URL : <a href='http://ec2-18-183-76-123.ap-northeast-1.compute.amazonaws.com/'>http://ec2-18-183-76-123.ap-northeast-1.compute.amazonaws.com/</a>
+J-MOVIE URL : <a href='https://j-movie-eight.vercel.app'>https://j-movie-eight.vercel.app</a>
 </pre>
 
 <br>
